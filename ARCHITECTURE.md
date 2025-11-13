@@ -2,48 +2,36 @@
 
 Rust workspace composed of several focused crates, wired together to control OBS, record video, and upload finished recordings to cloud storage (using S3).
 
-## High-Level Data Flow
+## Data Flow
 
 ```mermaid
-flowchart LR
-    subgraph CLI["cli crate (binary)"]
-        CLI_ARGS["Command-line args (clap)"]
+flowchart TD
+    subgraph App[obs-recorder Application]
+        CLI[CLI Layer\n(clap/argp)] --> CFG[Config Loader\n(YAML/TOML → RecordingConfig)]
+        CFG --> Pipe[Pipeline Controller]
+
+        subgraph RecordingSubsystem[Recording Subsystem]
+            Pipe --> REC[Recorder Controller\n(state machine)]
+            REC --> UPL[VideoUploader Trait\n(S3/GCS/Local)]
+        end
+
+        REC -->|start/stop cmds| RTx[mpsc::Sender<ObsCommand>]
     end
 
-    subgraph APP["app crate"]
-        SERVICE["AppContext / Service(record_and_upload, etc.)"]
+    subgraph Runtime[OBS Runtime Thread]
+        RTx --> RT[mpsc::Receiver<ObsCommand>]
+
+        RT --> ENG[ObsEngine\n(owns libobs-wrapper handles)]
+
+        subgraph EngineLayers[ObsEngine Internals]
+            ENG --> CTX[ObsContext\n(libobs core engine)]
+            ENG --> VID[Video Module\n(VideoEncoderInfo,\nresolution,fps)]
+            ENG --> AUD[Audio Module\n(AudioEncoderInfo)]
+            ENG --> SRC[Sources Module\n(SourceInfo,\nObsData)]
+            ENG --> OUT[Output Module\n(OutputInfo,\nffmpeg_muxer)]
+        end
     end
 
-    subgraph CORE["core crate"]
-        CFG["Config types (AppConfig, ObsConfig, RecordingConfig, StorageConfig)"]
-        DOMAIN["Domain types (RecordingProfile, FrameRate,Resolution, RecorderState,StorageBackend, etc.)"]
-        TRAITS["TraitsRecorder, Uploader"]
-        ERRORS["Error enumsAppError, UploadError"]
-    end
+    OUT --> FILE[Recorded File (MKV/MP4)]
 
-    subgraph OBSCLIENT["obs-client crate"]
-        OBSREC["ObsRecorderimpl Recorder"]
-    end
-
-    subgraph S3["storage-s3 crate"]
-        S3UP["S3Uploaderimpl Uploader"]
-    end
-
-    subgraph EXT_OBS["External: OBS"]
-        OBS["OBS Studio+ obs-websocket"]
-    end
-
-    subgraph EXT_S3["External: Cloud Storage"]
-        BUCKET["S3 Bucket(or S3-compatible)"]
-    end
-
-    CLI_ARGS -->|"parse & load config"| CFG
-    CFG --> SERVICE
-    DOMAIN --> TRAITS
-    TRAITS --> SERVICE
-
-    SERVICE -->|"uses dyn Recorder"| OBSREC
-    SERVICE -->|"uses dyn Uploader"| S3UP
-
-    OBSREC -->|"obs-websocket"| OBS
-    S3UP -->|"PutObject etc."| BUCKET
+    FILE --> UPL

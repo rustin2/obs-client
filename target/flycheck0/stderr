@@ -1,0 +1,9 @@
+error: failed to load manifest for workspace member `/Users/boemare/Documents/1.Projects/obs-client/crates/config`
+referenced by workspace at `/Users/boemare/Documents/1.Projects/obs-client/Cargo.toml`
+
+Caused by:
+  failed to parse manifest at `/Users/boemare/Documents/1.Projects/obs-client/crates/config/Cargo.toml`
+
+Caused by:
+  no targets specified in the manifest
+  either src/lib.rs, src/main.rs, a [lib] section, or [[bin]] section must be present
