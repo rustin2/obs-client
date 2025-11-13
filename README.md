@@ -6,11 +6,11 @@ Right now ’m putting together the basic structure of the workspace, the core d
 
 ## Current Goals
 
-- Connect to OBS using obs-websocket.
-- Start and stop recordings programmatically.
+- Connect to the obs engine using libobs-wrapper.
+- Start and stop recordings.
 - Save recordings locally.
-- Upload the finished files to an S3 bucket or another storage backend.
-- Keep everything well-organized using a Rust workspace.
+- Upload the finished files to an S3 bucket.
+- Keep everything well-organized lol.
 
 ## Architecture
 
