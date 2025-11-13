@@ -6,6 +6,7 @@ Rust workspace composed of several focused crates, wired together to control OBS
 
 ```mermaid
 flowchart TD
+
     CLI[CLI Layer (clap and argp)] --> CFG[Config Loader - RecordingConfig]
     CFG --> PIPE[Pipeline Controller]
     PIPE --> REC[Recorder Controller - State Machine]
