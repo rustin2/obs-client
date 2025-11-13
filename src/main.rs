@@ -1,3 +1,6 @@
+mod cli;
+
 fn main() {
-    println!("Hello, world!");
+    let args = cli::parse();
+    println!("obs-client starting. Config = {:?}", args.config);
 }
