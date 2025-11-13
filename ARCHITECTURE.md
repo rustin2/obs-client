@@ -6,31 +6,14 @@ Rust workspace composed of several focused crates, wired together to control OBS
 
 ```mermaid
 flowchart TD
-    subgraph App["obs-recorder Application"]
-        CLI["CLI Layer (clap/argp)"] --> CFG["Config Loader (YAML/TOML -> RecordingConfig)"]
-        CFG --> Pipe["Pipeline Controller"]
+    CLI[CLI Layer (clap and argp)] --> CFG[Config Loader - RecordingConfig]
+    CFG --> PIPE[Pipeline Controller]
+    PIPE --> REC[Recorder Controller - State Machine]
+    REC --> UPL[VideoUploader (S3, GCS, Local)]
+    REC --> TX[ObsCommand Sender]
 
-        subgraph RecordingSubsystem["Recording Subsystem"]
-            Pipe --> REC["Recorder Controller (state machine)"]
-            REC --> UPL["VideoUploader Trait (S3/GCS/Local)"]
-        end
+    TX --> RT[OBS Runtime Thread]
+    RT --> ENG[ObsEngine - uses libobs-wrapper]
 
-        REC -->|start/stop commands| RTx["mpsc::Sender<ObsCommand>"]
-    end
-
-    subgraph Runtime["OBS Runtime Thread"]
-        RTx --> RT["mpsc::Receiver<ObsCommand>"]
-
-        RT --> ENG["ObsEngine (owns libobs-wrapper handles)"]
-
-        subgraph EngineLayers["ObsEngine Internals"]
-            ENG --> CTX["ObsContext (libobs core engine)"]
-            ENG --> VID["Video Module (VideoEncoderInfo, resolution, fps)"]
-            ENG --> AUD["Audio Module (AudioEncoderInfo)"]
-            ENG --> SRC["Sources Module (SourceInfo, ObsData)"]
-            ENG --> OUT["Output Module (OutputInfo, ffmpeg_muxer)"]
-        end
-    end
-
-    OUT --> FILE["Recorded File (MKV/MP4)"]
-    FILE --> UPL
+    ENG --> CTX[ObsContext - OBS Core Engine]
+    ENG --> VID[Video]()
