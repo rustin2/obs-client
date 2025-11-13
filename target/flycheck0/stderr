@@ -1,9 +1,6 @@
-error: failed to load manifest for workspace member `/Users/boemare/Documents/1.Projects/obs-client/crates/config`
-referenced by workspace at `/Users/boemare/Documents/1.Projects/obs-client/Cargo.toml`
-
-Caused by:
-  failed to parse manifest at `/Users/boemare/Documents/1.Projects/obs-client/crates/config/Cargo.toml`
-
-Caused by:
-  no targets specified in the manifest
-  either src/lib.rs, src/main.rs, a [lib] section, or [[bin]] section must be present
+   0.042122083s  INFO prepare_target{force=false package_id=obs-client v0.1.0 (/Users/boemare/Documents/1.Projects/obs-client) target="obs-client"}: cargo::core::compiler::fingerprint: fingerprint dirty for obs-client v0.1.0 (/Users/boemare/Documents/1.Projects/obs-client)/Check { test: false }/TargetInner { name: "obs-client", doc: true, ..: with_path("/Users/boemare/Documents/1.Projects/obs-client/src/main.rs", Edition2021) }
+   0.042136042s  INFO prepare_target{force=false package_id=obs-client v0.1.0 (/Users/boemare/Documents/1.Projects/obs-client) target="obs-client"}: cargo::core::compiler::fingerprint:     dirty: TargetConfigurationChanged
+   0.042376708s  INFO prepare_target{force=false package_id=obs-client v0.1.0 (/Users/boemare/Documents/1.Projects/obs-client) target="obs-client"}: cargo::core::compiler::fingerprint: fingerprint dirty for obs-client v0.1.0 (/Users/boemare/Documents/1.Projects/obs-client)/Check { test: true }/TargetInner { name: "obs-client", doc: true, ..: with_path("/Users/boemare/Documents/1.Projects/obs-client/src/main.rs", Edition2021) }
+   0.042382708s  INFO prepare_target{force=false package_id=obs-client v0.1.0 (/Users/boemare/Documents/1.Projects/obs-client) target="obs-client"}: cargo::core::compiler::fingerprint:     dirty: TargetConfigurationChanged
+    Checking obs-client v0.1.0 (/Users/boemare/Documents/1.Projects/obs-client)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s

@@ -7,14 +7,19 @@ Rust workspace composed of several focused crates, wired together to control OBS
 ```mermaid
 flowchart TD
 
-    CLI[CLI Layer (clap and argp)] --> CFG[Config Loader - RecordingConfig]
-    CFG --> PIPE[Pipeline Controller]
-    PIPE --> REC[Recorder Controller - State Machine]
-    REC --> UPL[VideoUploader (S3, GCS, Local)]
+    CLI[CLI → Domain Types] --> CFG[Config Loader]
+    CFG --> PIPE[Pipeline]
+
+    PIPE --> REC[Recorder Controller]
     REC --> TX[ObsCommand Sender]
 
-    TX --> RT[OBS Runtime Thread]
-    RT --> ENG[ObsEngine - uses libobs-wrapper]
+    TX --> RT[Runtime Thread]
+    RT --> ENG[ObsEngine]
 
-    ENG --> CTX[ObsContext - OBS Core Engine]
-    ENG --> VID[Video]()
+    ENG --> CTX[Context]
+    ENG --> ENC[Encoders]
+    ENG --> CAP[Capture Sources]
+    ENG --> OUT[Output]
+
+    OUT --> FILE[Video File]
+    FILE --> UP[Uploader]
