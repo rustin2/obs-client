@@ -11,30 +11,30 @@ flowchart LR
     end
 
     subgraph APP["app crate"]
-        SERVICE["AppContext / Service\n(record_and_upload, etc.)"]
+        SERVICE["AppContext / Service(record_and_upload, etc.)"]
     end
 
     subgraph CORE["core crate"]
-        CFG["Config types\n(AppConfig, ObsConfig,\nRecordingConfig, StorageConfig)"]
-        DOMAIN["Domain types\n(RecordingProfile, FrameRate,\nResolution, RecorderState,\nStorageBackend, etc.)"]
-        TRAITS["Traits\nRecorder, Uploader"]
-        ERRORS["Error enums\nAppError, UploadError"]
+        CFG["Config types (AppConfig, ObsConfig, RecordingConfig, StorageConfig)"]
+        DOMAIN["Domain types (RecordingProfile, FrameRate,Resolution, RecorderState,StorageBackend, etc.)"]
+        TRAITS["TraitsRecorder, Uploader"]
+        ERRORS["Error enumsAppError, UploadError"]
     end
 
     subgraph OBSCLIENT["obs-client crate"]
-        OBSREC["ObsRecorder\nimpl Recorder"]
+        OBSREC["ObsRecorderimpl Recorder"]
     end
 
     subgraph S3["storage-s3 crate"]
-        S3UP["S3Uploader\nimpl Uploader"]
+        S3UP["S3Uploaderimpl Uploader"]
     end
 
     subgraph EXT_OBS["External: OBS"]
-        OBS["OBS Studio\n+ obs-websocket"]
+        OBS["OBS Studio+ obs-websocket"]
     end
 
     subgraph EXT_S3["External: Cloud Storage"]
-        BUCKET["S3 Bucket\n(or S3-compatible)"]
+        BUCKET["S3 Bucket(or S3-compatible)"]
     end
 
     CLI_ARGS -->|"parse & load config"| CFG
