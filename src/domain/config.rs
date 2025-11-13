@@ -1,7 +1,8 @@
 use std::path::PathBuf;
 use super::*;
+use serde::{Serialize, Deserialize};
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RecordingConfig {
     pub profile_name: String,
     pub resolution: Resolution,
@@ -14,7 +15,7 @@ pub struct RecordingConfig {
     pub output_dir: PathBuf,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CloudConfig {
     pub enabled: bool,
     pub bucket: Option<String>,
