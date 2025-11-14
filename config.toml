@@ -1,0 +1,17 @@
+[recording]
+profile_name = "default"
+resolution = "P1080"
+fps = 30
+video_bitrate_kbps = 6000
+audio_bitrate_kbps = 160
+encoder = "X264"
+container = "Mp4"
+output_dir = "./recordings"
+
+[recording.capture]
+Monitor = { index = 0 }
+
+[cloud]
+enabled = false
+bucket = "my-recordings-bucket"
+prefix = "recordings/"

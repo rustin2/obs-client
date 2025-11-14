@@ -1,22 +1,25 @@
 mod cli;
+mod config;
 mod domain;
+mod engine;
 
-fn main() {
+use engine::ObsEngine;
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = cli::parse();
-    println!("obs-client starting. Config = {:?}", args.config);
+    println!("obs-client starting. Config path = {:?}", args.config);
 
-    // Temporary: dummy config to prove types compile
-    let dummy = domain::config::RecordingConfig {
-        profile_name: "default".to_string(),
-        resolution: domain::resolution::Resolution::P720,
-        fps: 60,
-        video_bitrate_kbps: 800,
-        audio_bitrate_kbps: 320,
-        encoder: domain::encoder::Encoder::X264,
-        container: domain::container::ContainerFormat::Mp4,
-        capture: domain::capture::CaptureTarget::Monitor { index: 0 },
-        output_dir: ".".into(),
-    };
+    let (recording, cloud) = config::load(args.config)?;
 
-    println!("Dummy config: {:?}", dummy);
+    println!("Loaded recording config:\n{:#?}", recording);
+    println!("Loaded cloud config:\n{:#?}", cloud);
+
+    // Initialize OBS engine
+    let _engine = ObsEngine::new(recording, cloud)?;
+    println!("\nOBS Engine initialized successfully");
+
+    // For now, just demonstrate the API
+    println!("Ready to start recording (stubbed implementation)");
+
+    Ok(())
 }

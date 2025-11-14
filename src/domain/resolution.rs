@@ -1,8 +1,8 @@
-use serde::{Serialize, Deserialize};
+use serde::Deserialize;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub enum Resolution {
     P720,
     P1080,
-    Custom{ width: u16, height: u16 },
+    Custom { width: u16, height: u16 },
 }

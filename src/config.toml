@@ -1,0 +1,18 @@
+[recording]
+profile_name = "default"
+resolution = "P1080"
+fps = 60
+video_bitrate_kbps = 8000
+audio_bitrate_kbps = 320
+encoder = "X264"
+container = "Mkv"
+output_dir = "output"
+
+[recording.capture]
+type = "monitor"
+index = 0
+
+[cloud]
+enabled = false
+bucket = ""
+prefix = ""
